@@ -1,0 +1,90 @@
+# ============================================================
+# Domain-Adaptive Retrieval System — .gitignore
+# 目的: 排除模型權重、資料集、快取等大型/敏感檔案
+# ============================================================
+
+# -------------------- Python 通用 --------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# -------------------- 虛擬環境 --------------------
+venv/
+.venv/
+env/
+
+# -------------------- IDE --------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# -------------------- 環境變數 (含敏感資訊) --------------------
+.env
+.env.local
+
+# -------------------- 模型權重 (體積過大，不進版控) --------------------
+# HuggingFace 快取的基底模型 (每個 ~100MB-500MB)
+models/base_models/*
+!models/base_models/.gitkeep
+
+# LoRA adapter 權重 (雖然小，但屬於訓練產物)
+# 註: 若需版控 adapter，可移除以下兩行
+models/lora_adapters/bge-small-zh-lora/*
+!models/lora_adapters/bge-small-zh-lora/.gitkeep
+models/lora_adapters/bge-base-zh-lora/*
+!models/lora_adapters/bge-base-zh-lora/.gitkeep
+
+# -------------------- 資料集 (體積不可預測) --------------------
+data/raw/*
+!data/raw/.gitkeep
+data/synthetic/*
+!data/synthetic/.gitkeep
+data/hard_negatives/*
+!data/hard_negatives/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# -------------------- 輸出結果 --------------------
+outputs/charts/*
+!outputs/charts/.gitkeep
+outputs/embeddings/*
+!outputs/embeddings/.gitkeep
+outputs/reports/*
+!outputs/reports/.gitkeep
+
+# -------------------- HuggingFace 快取 --------------------
+.cache/
+*.bin
+*.safetensors
+# 註: 排除意外下載到專案根目錄的模型檔案
+# 正式快取路徑由 configs/base_config.py 中的 HF_HOME 控制
+
+# -------------------- PyTorch --------------------
+*.pt
+*.pth
+*.ckpt
+
+# -------------------- Jupyter Notebook --------------------
+.ipynb_checkpoints/
+notebooks/*.html
+
+# -------------------- Docker --------------------
+# docker-compose 產生的持久化卷不在專案目錄內，無需排除
+# 但排除可能的本地 build 產物
+docker-build.log
+
+# -------------------- OS --------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# -------------------- 日誌 --------------------
+*.log
+logs/

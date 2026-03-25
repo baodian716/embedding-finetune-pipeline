@@ -1,0 +1,117 @@
+# ============================================================
+# Domain-Adaptive Retrieval System — Docker Compose 編排
+#
+# 架構說明:
+#   本檔案定義兩個服務，共享同一張 GPU (RTX 4060 8GB)。
+#   由於 VRAM 限制，兩個服務「嚴禁同時」進行 GPU 密集運算。
+#   分時調度由應用層程式碼控制 (data_pipeline/vram_guard.py)。
+#
+# 常用指令:
+#   啟動 Ollama:         docker compose up -d ollama
+#   檢查 Ollama 狀態:    docker compose logs ollama
+#   停止 Ollama 釋放VRAM: docker compose stop ollama
+#   啟動主應用:          docker compose run --rm app python scripts/run_training.py
+#   全部啟動:            docker compose up
+#   全部停止:            docker compose down
+# ============================================================
+
+services:
+
+  # ---- Ollama 服務: 負責 LLM 合成資料 (GPU 階段 A) ----
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-server
+    # 持久化 Ollama 已下載的模型，避免重啟後重新下載
+    volumes:
+      - ollama_data:/root/.ollama
+    # GPU 直通設定 (需要 NVIDIA Container Toolkit)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    ports:
+      - "11434:11434"
+    # 健康檢查: 每 10 秒確認 Ollama API 可用
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # ---- 主應用服務: 資料管線 / 訓練 / 檢索 / 評估 ----
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: retrieval-app
+    # 資料與模型透過 volume 掛載，容器銷毀後仍保留
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+      # 開發模式: 掛載原始碼，修改後無需重新 build
+      - ./configs:/app/configs
+      - ./data_pipeline:/app/data_pipeline
+      - ./training:/app/training
+      - ./retrieval:/app/retrieval
+      - ./evaluation:/app/evaluation
+      - ./scripts:/app/scripts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      # Ollama 在 Docker 內部網路的位址
+      - OLLAMA_HOST=http://ollama:11434
+      - CUDA_VISIBLE_DEVICES=0
+      # 減少 CUDA 記憶體碎片化 (RTX 4060 8GB 環境必開)
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+      - PYTHONUNBUFFERED=1
+      - HF_HOME=/app/models/base_models
+    # 預設不自動啟動，透過 docker compose run 手動執行特定腳本
+    profiles:
+      - manual
+    # 註: 移除 profiles 行並加入下方 command 可改為自動執行
+    # command: python scripts/run_all.py
+
+# ---- 持久化卷 ----
+volumes:
+  # Ollama 模型快取 (7B 量化模型約 4GB)
+  ollama_data:
+
+# ============================================================
+# VRAM 分時調度流程 (操作者必讀):
+#
+# 階段 A — LLM 合成資料:
+#   1. docker compose up -d ollama
+#   2. 等待 Ollama 啟動 (healthcheck 通過)
+#   3. docker compose run --rm app python scripts/run_data_pipeline.py --phase synthetic
+#      (此階段 Python 僅做 HTTP 呼叫，不佔 GPU)
+#
+# 階段 A→B 過渡 — 釋放 Ollama VRAM:
+#   4. docker compose stop ollama
+#      (停止 Ollama 容器，GPU 驅動回收 VRAM，約需 3-5 秒)
+#
+# 階段 B — Hard Negative Mining:
+#   5. docker compose run --rm app python scripts/run_data_pipeline.py --phase mining
+#
+# 階段 C — LoRA 微調:
+#   6. docker compose run --rm app python scripts/run_training.py
+#
+# 階段 D — 評估:
+#   7. docker compose run --rm app python scripts/run_evaluation.py
+#
+# 或者，使用 Makefile 簡化上述流程:
+#   make data-synthetic
+#   make stop-ollama
+#   make data-mining
+#   make train
+#   make eval
+# ============================================================

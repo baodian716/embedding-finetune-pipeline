@@ -1,0 +1,48 @@
+# ============================================================
+# Domain-Adaptive Retrieval System — Python 依賴清單
+# 所有版本已鎖定，確保環境可重現
+# 安裝指令: pip install --no-cache-dir -r requirements.txt
+# ============================================================
+
+# -------------------- 核心深度學習框架 --------------------
+# 註: torch 由 Docker 基底映像預裝 (CUDA 12.4 版)
+# 若在容器外安裝，需自行至 https://pytorch.org 取得對應版本
+# torch==2.5.1
+# torchvision==0.20.1
+
+# -------------------- Transformers 生態系 --------------------
+transformers==4.48.0              # HuggingFace 模型載入/推論框架
+sentence-transformers==3.3.1      # Sentence embedding 高階封裝
+peft==0.14.0                      # ★ LoRA adapter 核心庫 (嚴禁全參數微調)
+datasets==3.2.0                   # HuggingFace 資料集工具
+accelerate==1.2.1                 # 分散式/混合精度訓練輔助
+safetensors==0.4.5                # 安全的模型序列化格式
+
+# -------------------- 繁體中文 NLP --------------------
+jieba==0.42.1                     # ★ 中文斷詞 (BM25 必須掛載，嚴禁空白切分)
+opencc-python-reimplemented==0.1.7  # 簡繁轉換 (jieba 預設辭典為簡體)
+
+# -------------------- 稀疏檢索 --------------------
+rank-bm25==0.2.2                  # BM25 演算法 (純 CPU 實作)
+
+# -------------------- LLM 合成資料 --------------------
+ollama==0.4.7                     # Ollama Python SDK (HTTP 呼叫 LLM)
+httpx==0.28.1                     # 非同步 HTTP 客戶端 (ollama 依賴)
+
+# -------------------- 評估與視覺化 --------------------
+scikit-learn==1.6.1               # NDCG 計算、通用 ML 工具
+matplotlib==3.10.0                # 長條圖繪製
+seaborn==0.13.2                   # 統計圖表美化
+umap-learn==0.5.7                 # UMAP 降維散點圖
+
+# -------------------- 通用工具 --------------------
+numpy==1.26.4                     # 數值運算
+pandas==2.2.3                     # 資料處理與分析
+tqdm==4.67.1                      # 進度條顯示
+pyyaml==6.0.2                     # YAML 設定解析
+python-dotenv==1.0.1              # .env 環境變數載入
+
+# -------------------- 系統監控 (OOM 防護必備) --------------------
+psutil==6.1.1                     # CPU/RAM 即時監控
+pynvml==11.5.3                    # ★ NVIDIA GPU 監控 (VRAMGuard 核心依賴)
+loguru==0.7.3                     # 結構化日誌 (取代 print debug)
