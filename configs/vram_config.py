@@ -47,7 +47,13 @@ class VRAMConfig:
     # ---- VRAM 釋放後的驗證閾值 ----
     # 階段切換時，執行 empty_cache() 後殘餘 VRAM 不應超過此值
     # 若超過，表示有模型/張量未正確釋放，應拋出錯誤
-    post_release_max_mb: int = 200
+    #
+    # ★ Windows WDDM 模式注意事項 ★
+    # Linux 無頭伺服器: GPU 無顯示佔用，閾值可設 200 MB
+    # Windows WDDM 模式: 桌面 UI (explorer, Discord 等) 固定佔用 ~800–1100 MB
+    # 本值已調整為 1500 MB 以相容 Windows 開發環境
+    # 若在 Linux 伺服器部署，可將此值改回 200
+    post_release_max_mb: int = 1500
 
     # ---- 監控頻率 ----
     # 訓練迴圈中每 N 步檢查一次 VRAM 使用量

@@ -55,8 +55,10 @@ class BaseConfig:
     ollama_host: str = field(
         default_factory=lambda: os.getenv("OLLAMA_HOST", "http://localhost:11434")
     )
+    # llama3.2 (3B, q4_K_M) 約佔 2.0 GB VRAM；
+    # 原 qwen2.5:7b 約佔 4.5 GB，對 8GB 裝置在資料管線與訓練階段餘量不足
     ollama_model: str = field(
-        default_factory=lambda: os.getenv("OLLAMA_MODEL", "qwen2.5:7b-instruct-q4_K_M")
+        default_factory=lambda: os.getenv("OLLAMA_MODEL", "llama3.2")
     )
 
     # ---- 日誌等級 ----

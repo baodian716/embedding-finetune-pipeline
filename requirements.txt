@@ -42,6 +42,9 @@ tqdm==4.67.1                      # 進度條顯示
 pyyaml==6.0.2                     # YAML 設定解析
 python-dotenv==1.0.1              # .env 環境變數載入
 
+# -------------------- PDF 文件轉換 --------------------
+pdfminer.six==20231228             # PDF 文字抽取 (pdf_to_corpus.py 使用)
+
 # -------------------- 系統監控 (OOM 防護必備) --------------------
 psutil==6.1.1                     # CPU/RAM 即時監控
 pynvml==11.5.3                    # ★ NVIDIA GPU 監控 (VRAMGuard 核心依賴)

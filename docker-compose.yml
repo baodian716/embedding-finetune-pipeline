@@ -76,8 +76,8 @@ services:
       - PYTHONUNBUFFERED=1
       - HF_HOME=/app/models/base_models
     # 預設不自動啟動，透過 docker compose run 手動執行特定腳本
-    profiles:
-      - manual
+    # profiles:
+    #   - manual
     # 註: 移除 profiles 行並加入下方 command 可改為自動執行
     # command: python scripts/run_all.py
 

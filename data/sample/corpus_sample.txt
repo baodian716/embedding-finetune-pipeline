@@ -1,0 +1,80 @@
+Phison may make changes to specifications and product description at any time without notice. PHISON and
+the Phison logo are trademarks of Phison Electronics Corporation, registered in the United States and other
+countries. Products and specifications discussed herein are for reference purposes only. Copies of documents
+which include information of part number or ordering number, or other materials may be obtained by
+Phison aiDAPTIV+ provides the hardware and software necessary to fine-tune train many of the most popular
+AI models. However, licensing and distribution agreements preclude companies from shipping systems with most Large Language Models (LLM) pre-installed. This document will cover the necessary steps to create an account and gain access to Meta’s Llama 3 models for use with aiDAPTIV+.
+HuggingFace.co is one of the most popular websites for AI models, including Meta Llama, DeepSeek, Qwen, and many more. Most publicly available LLMs have restricted access to their models and require an account at HuggingFace, along with signing an agreement on how the model(s) will be used. This is intended to prevent end users from unwittingly downloading modified models that don’t represent the original LLMs.
+Create an account by opening HuggingFace.co in the browser of your choice to get started.
+After giving your email and choosing a password, followed by choosing a unique username, you’ll receive a confirmation email from Hugging Face. Follow the link provided to confirm your account.
+An optional step is to create or join an organization, which allows people from the same group — a business, university, lab, etc. — to more readily collaborate and work together. You can also provide information for accounts with X, GitHub, and LinkedIn, and provide information on your AI and ML interests. Once you’ve completed these steps (or skipped them), you’ll land on your Hugging Face profile page.
+To get started with aiDAPTIV+, the most useful area will be the Models section of HuggingFace.co, linked along the top of the webpages. There are thousands of models that have been uploaded by companies and users. For the purposes of this guide, we’ll get Meta’s Llama 3 models for use with aiDAPTIV+.
+Click in the search bar and type “meta-llama” and a list of matches will populate as you type. Not all models are in the required format to work with aiDAPTIV+, and for Llama-3.1-8B specifically we want the Instruct version: Llama-3.1-8B-Instruct.
+Before you can download Llama 3, you need to agree to the community license agreement. Click the “Expand to review and access” button, then fill in the form with the requested information. Once you submit a request for access, you’ll see a notification. It typically takes a few minutes for the request to be granted, at which point you’ll receive an email notification of approval. Clicking the “your settings” link will show the status of your request.
+Once your request has been accepted, you’ll have access to all the related repositories — Llama 3.x 1B, 3B,
+Once an account has been granted access to the appropriate LLM, Llama 3 in this example, Pro Suite needs an access token in order to download the files from Hugging Face. To create a token, click on your user profile icon (in the top-right corner of the Hugging Face site), and the fourth option from the bottom of the list should be Access Tokens — click that.
+If this is a new account with no existing tokens, you need to create one. The simplest option is to create a read-only token with access to all the repositories you have on Hugging Face. Set the token type to “Read” and give it an appropriate name, then click the “Create token” button.
+A popup will appear with the Access Token key, which you will want to copy and save in a secure location — this will be the only chance to copy the key. If you need the key later, you will have to invalidate and refresh the token, which will show up in the list of access tokens.
+For the Llama 3.x LLMs, there are multiple models to download: 1B, 3B, 8B, 70B, and 405B. The last two are quite large and will require significant amounts of storage space. The commands to download in Linux are given below as well as in the image, which will need the Hugging Face access token created above. Note that you should not use “sudo” on these commands or it will fail.
+Open a terminal and paste the commands for the desired LLMs into the window, one at a time. Press enter to send the command and begin downloading. It can take several minutes to multiple hours, depending on the size of the LLM and the speed of your connection.
+Once the model has been downloaded, you will need to package the data into a ZIP file, or copy and paste it into the correct folder for Pro Suite to utilize. The download command given above puts all the files into the directory: Home/Storage/[model]. There are two methods for preparing the model for use with aiDAPTIV+, with the first being the recommended approach.
+Next, copy the files and directory into the correct system directory with the following command:
+Alternatively, you can package the files into a ZIP archive. This will require significantly more time, both to create the ZIP archive and to decompress the archive, but it can be useful if you intend to deploy the model files on multiple systems.
+Open File Manager and navigate to Home/Storage/meta-llama, and then choose the appropriate subdirectory (e.g. Llama-3.2-3B-Instruct). Select all the files in the directory (Ctrl+A), right-click and choose “Compress…” then give the archive the appropriate name (Llama-3.2-3B-Instruct). It will take several minutes for the system to create the compressed archive.
+Once the ZIP file has been created, open aiADAPTIV+ in the browser, navigate to the Models tab, and then drag and drop the ZIP file in the area on the left of the page that says “Drag files here or click to upload.” (You can also click and navigate to the ZIP file.)
+You will now see the model name and size listed, and the “Click to upload” button will appear in the bottomleft corner of the window. Click that and it will copy the files to the necessary folder and decompress the files to the appropriate directory. Again, this can take several minutes.
+When the process finishes, you should now see the newly uploaded model in the list of models within aiDAPTIV+. To make the model available for use, check the “Available” box, which will load the model into memory.
+Note: Due to the current Pro Suite version only matching this kernel version, when installing the OS, DO NOT connect to the internet to avoid automatic updates to the kernel version.
+Google Chrome (The recommended default browser for use with the Pro Suite service.)
+Note : When logging in for the first time, you may log in with the following account
+The aiDAPTIV+ Pro Suite is a web-based GUI program that enables a No Code approach to model training. It
+streamlines the entire process from Dataset generation, Fine-Tuning, Validation to Inference. This allows
+users to quickly convert documents into files that can be used for training their own fine-tuned models, and
+Users can access Pro Suite main functions through the tabs at the top of the webpage. Below are detailed
+There’re 2 main functions in the Dataset tab: Upload and aiDAPTIVGuru. The Upload function allows users to
+upload an existing dataset to Pro Suite and manage the uploaded datasets. After clicking the Upload tab,
+users will see the page below. This page is divided into the upload area on the left and list area on the right.
+File upload location : Support JSON, JSONL and Parquet file format. (Upload one file at a time)
+Dataset preparation is a very labor-intensive process. aiDAPTIVGuru is a feature of Pro Suite that enhances
+the dataset generation. It transforms user-provided documents or files with domain-specific knowledge
+(such as product manuals, technical documents, specifications...etc) into Q&A sets and will automatically
+You can download the model from huggingface and then quantize it using Pro Suite.
+Note: aiDAPTIVGuru_Pro is an additional value-added service. For more information on enabling this service, please contact Phison’s Sales account.
+2. Model: The model needs to be pinned first in order to appear in the model list.
+Training QA ratio(%): The proportion of data in the data set that is used as training data (the remaining proportion is used as scoring data).
+7. Overlap: The amount of data overlap when the data file is divided into chunks.
+8. Number of reference chunk per question: Number of reference Chunk for each data instruction.
+10. Language Evaluation: After activation, the content generated by the Dataset through Guru will refer
+Confirm Inspect the data pre-processing results. The user can edit and adjust data online.
+Monitor the dataset generation progress. Pressing “Cancel” will terminate the operation.
+Until aiDAPTIV+, small and medium-sized businesses have been limited to small, imprecise training models with the ability to scale beyond Llama-2 7b.
+Phison’s aiDAPTIV+ solution enables the training of significantly larger models, giving you the opportunity to run workloads previously reserved for data-centers.
+Pro Suite’s fine-tune feature is integrated with Phison’s aiDAPTIV+ technology, reducing hardware resources.
+The function will be divided into three stages, hardware specification preview, parameter setting and final confirmation.
+• When selecting the number of GPUs, make sure there are enough GPU resources to perform the fine-
+System hardware configuration (GPU, VRAM, system memory, aiDAPTIVLink, aiDAPTIVCache, OS...) .
+1. Model : Select the model to fine-tune. (Only Pre-training and Fine-tune models will be displayed
+Note: The model needs to be available first in order to appear in the model list.
+Per Update Total Batch Size: Set the total batch size for one update. For example, if you are running on 4 GPUs with per_device_train_batch_size=4 and want to update the model every 80 batches, then you should set the per_update_total_batch_size to 80. The machine will run 80/4/4 = 5 iterations and update the model once. If not divisible, round up to the next whole number.
+Note: Click the Advice button to automatically calculate the appropriate Max_Seq_Length value.
+Triton: Trigger triton training procedure. It can shorten the model training time. (Please refer to
+Note: If the user selects a model that does not support Triton for training, the following error message will appear after the training begins: "Phison Accelerator does not support," and the training process will be terminated.
+Monitor the fine-tuning status, including basic information, progress, hardware resource usage
+(aiDAPTIVCache, GPU, system memory...) of each fine-tune job, training loss trend chart and complete log of
+Basic information and hardware usage of a single finetune job (red block in the Figure 3-11)
+Trend chart of training loss in a single finetune job (purple block in the Figure 3-11)
+Complete Log information of aiDAPTIVCache in a single fine-tune job (orange block in the Figure
+Only jobs whose status is “Running” can be cancelled. It can take several seconds for the GPU resources to
+Used to compare the results of the fine-tuned model against the original model or any other models.
+Users can ask questions to confirm whether the fine-tuning results meet expectations.
+System Prompt : A predefined instruction or message given to a software system to guide its behavior or output. It typically helps set the context, tone, or specific parameters for the interaction
+3. Max tokens : This parameter specifies the maximum number of tokens that the model can use to generate responses, where a token generally represents a part of a word or a whole word. (Range:
+Temperature : This parameter controls the randomness of the generation process. A higher temperature results in more diverse responses, while a lower temperature makes responses more likely to follow common patterns seen in the training data. (Range: 0 ~ 1)
+Top-p : Similarly, a sampling technique with temperature called nucleus sampling, you can control how deterministic the model is at generating a response. If you are looking for exact and factual answers keep this low. (Range: 0 ~ 1)
+Include chat history : Determines whether to include previous dialogue interactions in the context for generating current responses.
+Note : This is an additional value-added service. For more information on enabling this service, please contact Phison’s Sales account.
+Temperature : This parameter controls the randomness of the generation process. A higher temperature results in more diverse responses, while a lower temperature makes responses more likely to follow common patterns seen in the training data.
+6. Max token : This parameter specifies the maximum number of tokens that the model can use to generate responses, where a token generally represents a part of a word or a whole word.
+Recall Size : Refers to the number of documents retrieved from a database before generating a response. (Range: 1 ~ 40)
+Temperature : This parameter controls the randomness of the generation process. A higher
+ Max token : This parameter specifies the maximum number of tokens that the model can
