@@ -11,17 +11,17 @@ from dataclasses import dataclass
 class VRAMConfig:
     """
     VRAM 預算管理設定。
-    所有數值單位為 MB，基於 RTX 4060 8GB (實際可用 ~7.6 GB) 校準。
+    所有數值單位為 MB，基於 RTX 4060 Ti 8GB (實際可用 ~7.6 GB) 校準。
     """
 
     # ---- GPU 硬體規格 ----
-    # RTX 4060 標稱 8192 MB，但系統/驅動會保留一部分
+    # RTX 4060 Ti 標稱 8192 MB，但系統/驅動會保留一部分
     total_vram_mb: int = 8192
     # 安全餘量: 預留給作業系統 GUI、CUDA context 等
     # 8GB 環境建議預留 1024 MB (1GB)
     safety_margin_mb: int = 1024
     # 實際可用 VRAM = total - safety_margin
-    # RTX 4060: 8192 - 1024 = 7168 MB
+    # RTX 4060 Ti: 8192 - 1024 = 7168 MB
 
     # ---- 各階段 VRAM 預算上限 ----
     # 階段 A: Ollama LLM 合成資料

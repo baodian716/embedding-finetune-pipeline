@@ -5,7 +5,7 @@
 #   vram_guard.py — 「階段邊界」的 VRAM 釋放與安全斷言
 #   memory_utils.py — 「訓練迴圈內部」的動態監控與 OOM 緊急應變
 #
-# RTX 4060 訓練階段的 VRAM 使用分析:
+# RTX 4060 Ti 訓練階段的 VRAM 使用分析:
 #
 #   bge-small-zh-v1.5 (batch=8, seq=256, fp16):
 #     模型參數 (fp16):   ~48  MB

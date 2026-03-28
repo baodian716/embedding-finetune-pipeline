@@ -2,7 +2,7 @@
 # Domain-Adaptive Retrieval System — Docker Compose 編排
 #
 # 架構說明:
-#   本檔案定義兩個服務，共享同一張 GPU (RTX 4060 8GB)。
+#   本檔案定義兩個服務，共享同一張 GPU (RTX 4060 Ti 8GB)。
 #   由於 VRAM 限制，兩個服務「嚴禁同時」進行 GPU 密集運算。
 #   分時調度由應用層程式碼控制 (data_pipeline/vram_guard.py)。
 #
@@ -71,7 +71,7 @@ services:
       # Ollama 在 Docker 內部網路的位址
       - OLLAMA_HOST=http://ollama:11434
       - CUDA_VISIBLE_DEVICES=0
-      # 減少 CUDA 記憶體碎片化 (RTX 4060 8GB 環境必開)
+      # 減少 CUDA 記憶體碎片化 (RTX 4060 Ti 8GB 環境必開)
       - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
       - PYTHONUNBUFFERED=1
       - HF_HOME=/app/models/base_models

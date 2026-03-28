@@ -65,7 +65,7 @@ class VRAMGuard:
         """
         Args:
             post_release_max_mb: 釋放後允許的最大殘餘 VRAM (MB)。
-                                  RTX 4060 建議值: 200 MB (CUDA context 本身約佔 100-150 MB)
+                                  RTX 4060 Ti 建議值: 200 MB (CUDA context 本身約佔 100-150 MB)
             device_index: GPU 設備索引。單卡環境固定為 0
         """
         self.post_release_max_mb = post_release_max_mb

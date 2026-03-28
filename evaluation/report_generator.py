@@ -349,7 +349,7 @@ def generate_markdown_report(
         "",
         "### 硬體限制與妥協",
         "",
-        "- **小批次 in-batch negatives**: RTX 4060 8GB 限制 batch_size=4~8，",
+        "- **小批次 in-batch negatives**: RTX 4060 Ti 8GB 限制 batch_size=4~8，",
         "  每步只有 3~7 個 in-batch negatives，遠少於原始 BGE 訓練的 256+。",
         "  預挖掘的 hard negatives 部分補償了此不足，但無法完全彌補。",
         "- **LoRA r=8 的容量限制**: 參數量極小 (~1% 的 base model)，",

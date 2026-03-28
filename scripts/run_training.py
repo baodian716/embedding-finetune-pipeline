@@ -12,7 +12,7 @@
 #   make train-small
 #   make train-base
 #
-# 記憶體使用估算 (RTX 4060 8GB):
+# 記憶體使用估算 (RTX 4060 Ti 8GB):
 #   bge-small: ~308 MB  (遠低於 2000 MB 預算)
 #   bge-base:  ~644 MB  (遠低於 3500 MB 預算)
 #   若 OOM，請先確認 Ollama 服務已停止 (make stop-ollama)

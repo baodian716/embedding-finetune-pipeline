@@ -484,7 +484,7 @@ class LoRATrainer:
         VRAM 峰值 = (B×3) × L × D × num_layers 的啟動值，比分開 forward 高 3 倍。
         分開 forward (每次 B × L) 讓啟動值在每次 forward 後可以被 GC 回收，
         代價是 3 次 forward 有約 10-15% 的 kernel launch overhead。
-        在 RTX 4060 8GB 的 VRAM 限制下，優先選擇記憶體安全的方案。
+        在 RTX 4060 Ti 8GB 的 VRAM 限制下，優先選擇記憶體安全的方案。
 
         ★ fp16 autocast 範圍:
         autocast 只應包覆 forward pass，不應包覆 optimizer.step()。
